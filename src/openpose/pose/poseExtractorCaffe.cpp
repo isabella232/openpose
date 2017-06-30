@@ -84,6 +84,22 @@ namespace op
             // 1. Caffe deep network
             spNet->forwardPass(inputNetData.getConstPtr());                                                     // ~79.3836ms
 
+            auto shape = spCaffeNetOutputBlob->shape();
+
+            for (auto i = shape.begin(); i != shape.end(); ++i)
+                std::cout << *i << ' ';
+
+            std::cout << std::endl;
+
+            for (auto h = 0; h < shape[2]; h++) {
+                for (auto w = 0; w < shape[3]; w++) {
+                    for (auto c = 0; c < shape[1]; c++)
+                        std::cout << spCaffeNetOutputBlob->data_at(0, c, h, w) << ' ';
+                    std::cout << std::endl;
+                }
+                std::cout << std::endl << std::endl;
+            }
+
             // 2. Resize heat maps + merge different scales
             spResizeAndMergeCaffe->setScaleRatios(scaleRatios);
             #ifndef CPU_ONLY
