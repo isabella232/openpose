@@ -8,6 +8,8 @@
 #include <openpose/utilities/openCv.hpp>
 #include <openpose/pose/poseExtractorCaffe.hpp>
 
+#include <iomanip>
+
 namespace op
 {
     PoseExtractorCaffe::PoseExtractorCaffe(const Point<int>& netInputSize, const Point<int>& netOutputSize, const Point<int>& outputSize, const int scaleNumber,
@@ -16,7 +18,7 @@ namespace op
         PoseExtractor{netOutputSize, outputSize, poseModel, heatMapTypes, heatMapScale},
         mResizeScale{mNetOutputSize.x / (float)netInputSize.x},
         spNet{std::make_shared<NetCaffe>(std::array<int,4>{scaleNumber, 3, (int)netInputSize.y, (int)netInputSize.x},
-                                         modelFolder + POSE_PROTOTXT[(int)poseModel], modelFolder + POSE_TRAINED_MODEL[(int)poseModel], gpuId)},
+                                         modelFolder + POSE_PROTOTXT[(int)poseModel], modelFolder + POSE_TRAINED_MODEL[(int)poseModel], gpuId, "conv1_1")},
         spResizeAndMergeCaffe{std::make_shared<ResizeAndMergeCaffe<float>>()},
         spNmsCaffe{std::make_shared<NmsCaffe<float>>()},
         spBodyPartConnectorCaffe{std::make_shared<BodyPartConnectorCaffe<float>>()}
@@ -91,14 +93,14 @@ namespace op
 
             std::cout << std::endl;
 
-//            for (auto h = 0; h < shape[2]; h++) {
-//                for (auto w = 0; w < shape[3]; w++) {
-//                    for (auto c = 0; c < shape[1]; c++)
-//                        std::cout << spCaffeNetOutputBlob->data_at(0, c, h, w) << ' ';
-//                    std::cout << std::endl;
-//                }
-//                std::cout << std::endl << std::endl;
-//            }
+            for (auto h = 0; h < shape[2]; h++) {
+                for (auto w = 0; w < shape[3]; w++) {
+                    for (auto c = 0; c < shape[1]; c++)
+                        std::cout << std::fixed << std::setprecision(8) << spCaffeNetOutputBlob->data_at(0, c, h, w) << ' ';
+                    std::cout << std::endl;
+                }
+                std::cout << std::endl << std::endl;
+            }
 
             // 2. Resize heat maps + merge different scales
             spResizeAndMergeCaffe->setScaleRatios(scaleRatios);
