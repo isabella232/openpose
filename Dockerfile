@@ -9,7 +9,8 @@ RUN apt-get update && apt-get install -y \
     sudo \
     wget \
     python-pip \
-    cmake
+    cmake \
+    nano
 
 WORKDIR /usr/local
 
