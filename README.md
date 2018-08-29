@@ -11,7 +11,7 @@
 [OpenPose](https://github.com/CMU-Perceptual-Computing-Lab/openpose) represents the **first real-time multi-person system to jointly detect human body, hand, and facial keypoints (in total 135 keypoints) on single images**.
 
 <p align="center">
-    <img src="doc/media/pose_face_hands.gif", width="480">
+    <img src="base/doc/media/pose_face_hands.gif", width="480">
 </p>
 
 ## Features
@@ -69,27 +69,27 @@ For further details, check [all released features](doc/released_features.md) and
 ## Results
 ### Body-Foot Estimation
 <p align="center">
-    <img src="doc/media/dance_foot.gif", width="360">
+    <img src="base/doc/media/dance_foot.gif", width="360">
 </p>
 
 ### Body, Face, and Hands Estimation
 <p align="center">
-    <img src="doc/media/pose_face.gif", width="360">
+    <img src="base/doc/media/pose_face.gif", width="360">
 </p>
 
 ### 3-D Reconstruction Module
 <p align="center">
-    <img src="doc/media/openpose3d.gif", width="360">
+    <img src="base/doc/media/openpose3d.gif", width="360">
 </p>
 
 ### Body and Hands Estimation
 <p align="center">
-    <img src="doc/media/pose_hands.gif", width="360">
+    <img src="base/doc/media/pose_hands.gif", width="360">
 </p>
 
 ### Body Estimation
 <p align="center">
-    <img src="doc/media/dance.gif", width="360">
+    <img src="base/doc/media/dance.gif", width="360">
 </p>
 
 

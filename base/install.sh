@@ -18,7 +18,7 @@ bash ./ubuntu/install_cmake.sh
 exitIfError
 
 echo "------------------------- Installing OpenCV Python -------------------------"
-pip install opencv-python
+pip install opencv-python pillow
 exitIfError
 
 echo "------------------------- Making Caffe and OpenPose -------------------------"

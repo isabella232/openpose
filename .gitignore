@@ -99,25 +99,25 @@ distribute/
 *.xml
 
 ######################### 3rd-party Folders and Zip Files #########################
-3rdparty/caffe/.git
-3rdparty/caffe/.github
-3rdparty/asio/
-3rdparty/eigen/
-3rdparty/windows/caffe/
-3rdparty/windows/caffe_cpu/
-3rdparty/windows/caffe_opencl/
-3rdparty/windows/caffe3rdparty/
-3rdparty/windows/opencv/
-3rdparty/windows/freeglut/
-3rdparty/windows/spinnaker/
-3rdparty/*zip
-3rdparty/windows/*zip
+base/3rdparty/caffe/.git
+base/3rdparty/caffe/.github
+base/3rdparty/asio/
+base/3rdparty/eigen/
+base/3rdparty/windows/caffe/
+base/3rdparty/windows/caffe_cpu/
+base/3rdparty/windows/caffe_opencl/
+base/3rdparty/windows/caffe3rdparty/
+base/3rdparty/windows/opencv/
+base/3rdparty/windows/freeglut/
+base/3rdparty/windows/spinnaker/
+base/3rdparty/*zip
+base/3rdparty/windows/*zip
 
 ######################### Compilation (build, distribute & bins) Files / Folders #########################
 *.bin
 *.testbin
-build
-build*
+base/build
+base/build*
 .build*
 *cmake_build
 distribute/*

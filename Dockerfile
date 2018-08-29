@@ -14,6 +14,8 @@ RUN apt-get update && apt-get install -y \
 
 WORKDIR /usr/local
 
-COPY . .
+COPY base/ .
 
 RUN ./install.sh
+
+COPY extract_pose.py ./build/examples/tutorial_python/
