@@ -90,7 +90,7 @@ while 1:
                         output_image.paste(res, (max(0, startX), max(0, startY)), res)
                     
         if isinstance(output_image, Image.Image):
-        output_image = np.array(output_image)
+            output_image = np.array(output_image)
 
         # Display the image
         cv2.imshow("window", output_image)
