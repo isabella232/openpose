@@ -19,3 +19,5 @@ COPY base/ .
 RUN ./install.sh
 
 COPY extract_pose.py ./build/examples/tutorial_python/
+
+COPY images/ images/
