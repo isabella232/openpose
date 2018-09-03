@@ -66,28 +66,28 @@ while 1:
         keypoints, output_image = openpose.forward(img, True)
         # Print the human pose keypoints, i.e., a [#people x #keypoints x 3]-dimensional numpy object with the keypoints of all the people on that image
         if keypoints.any():
-        for person in keypoints:
-            nose = person[0]
-            neck = person[1]
-            lEar = person[18]
-            rEar = person[17]
-            if lEar[2] > threshold and rEar[2] > threshold and nose[2] > threshold and neck[2] > threshold:
-                width = distance(lEar[0:2], rEar[0:2])
-                degrees = math.degrees(math.asin((rEar[1] - lEar[1]) / width))
-                width = int(1.3 * width)
-                height = int(width * 1.3)
-                startX = int(nose[0] - (width / 2.0))
-                startY = int(nose[1] - 10 - (height / 2.0))
+            for person in keypoints:
+                nose = person[0]
+                neck = person[1]
+                lEar = person[18]
+                rEar = person[17]
+                if lEar[2] > threshold and rEar[2] > threshold and nose[2] > threshold and neck[2] > threshold:
+                    width = distance(lEar[0:2], rEar[0:2])
+                    degrees = math.degrees(math.asin((rEar[1] - lEar[1]) / width))
+                    width = int(1.3 * width)
+                    height = int(width * 1.3)
+                    startX = int(nose[0] - (width / 2.0))
+                    startY = int(nose[1] - 10 - (height / 2.0))
 
-                res = faceImg.resize((width, height)).rotate(degrees)
-                if isinstance(output_image, np.ndarray):
-                    output_image = Image.fromarray(output_image.astype('uint8'), 'RGB')
-                if startX > 0 and startY > 0:
-                    output_image.paste(res, (startX, startY), res)
-                else:
-                    cropBox = (max(0, -startX), max(0, -startY), width, height)
-                    res = res.crop(cropBox)
-                    output_image.paste(res, (max(0, startX), max(0, startY)), res)
+                    res = faceImg.resize((width, height)).rotate(degrees)
+                    if isinstance(output_image, np.ndarray):
+                        output_image = Image.fromarray(output_image.astype('uint8'), 'RGB')
+                    if startX > 0 and startY > 0:
+                        output_image.paste(res, (startX, startY), res)
+                    else:
+                        cropBox = (max(0, -startX), max(0, -startY), width, height)
+                        res = res.crop(cropBox)
+                        output_image.paste(res, (max(0, startX), max(0, startY)), res)
                     
         if isinstance(output_image, Image.Image):
         output_image = np.array(output_image)
