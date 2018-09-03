@@ -5,6 +5,8 @@ import cv2
 import os
 import math
 import numpy as np
+import glob
+from random import randint
 from PIL import Image
 from sys import platform
 
@@ -43,41 +45,53 @@ params["default_model_folder"] = dir_path + "/../../../models/"
 # Construct OpenPose object allocates GPU memory
 openpose = OpenPose(params)
 
-faceImg = Image.open('/usr/local/images/suarez.png')
+image_file_names = glob.glob("/usr/local/images/*.png")
+print("Loaded images: ", image_file_names)
+faces = [Image.open(facePath) for facePath in image_file_names]
+
 threshold = 0.3
 cap = cv2.VideoCapture(0)
+
+cv2.namedWindow("window", cv2.WND_PROP_FULLSCREEN)
+cv2.setWindowProperty("window",cv2.WND_PROP_FULLSCREEN,cv2.WINDOW_FULLSCREEN)
+
 while 1:
-    # Read new image
-    ret, img = cap.read()
-    if not ret: 
-        continue
-    # img = cv2.imread("../../../examples/media/COCO_val2014_000000000192.jpg")
-    # Output keypoints and the image with the human skeleton blended on it
-    keypoints, output_image = openpose.forward(img, True)
-    # Print the human pose keypoints, i.e., a [#people x #keypoints x 3]-dimensional numpy object with the keypoints of all the people on that image
-    if keypoints.any():
+    faceImg = faces[randint(0, len(faces) - 1)]
+    for i in list(range(100)):
+        # Read new image
+        ret, img = cap.read()
+        if not ret: 
+            continue
+        # Output keypoints and the image with the human skeleton blended on it
+        keypoints, output_image = openpose.forward(img, True)
+        # Print the human pose keypoints, i.e., a [#people x #keypoints x 3]-dimensional numpy object with the keypoints of all the people on that image
+        if keypoints.any():
         for person in keypoints:
             nose = person[0]
             neck = person[1]
             lEar = person[18]
             rEar = person[17]
             if lEar[2] > threshold and rEar[2] > threshold and nose[2] > threshold and neck[2] > threshold:
-                height = int(1.7 * distance(nose[0:2], neck[0:2]))
                 width = distance(lEar[0:2], rEar[0:2])
                 degrees = math.degrees(math.asin((rEar[1] - lEar[1]) / width))
-                width = int(1.5 * width)
+                width = int(1.3 * width)
+                height = int(width * 1.3)
                 startX = int(nose[0] - (width / 2.0))
-                startY = int(nose[1] - (height / 2.0))
+                startY = int(nose[1] - 10 - (height / 2.0))
+
+                res = faceImg.resize((width, height)).rotate(degrees)
+                if isinstance(output_image, np.ndarray):
+                    output_image = Image.fromarray(output_image.astype('uint8'), 'RGB')
                 if startX > 0 and startY > 0:
-                    res = faceImg.resize((width, height)).rotate(degrees)
-                    if isinstance(output_image, np.ndarray):
-                        output_image = Image.fromarray(output_image.astype('uint8'), 'RGB')
                     output_image.paste(res, (startX, startY), res)
+                else:
+                    cropBox = (max(0, -startX), max(0, -startY), width, height)
+                    res = res.crop(cropBox)
+                    output_image.paste(res, (max(0, startX), max(0, startY)), res)
                     
-                # output_image[startX:startX+width, startY:startY+height] = res
-    if isinstance(output_image, Image.Image):
+        if isinstance(output_image, Image.Image):
         output_image = np.array(output_image)
-        
-    # Display the image
-    cv2.imshow("output", output_image)
-    cv2.waitKey(15)
+
+        # Display the image
+        cv2.imshow("window", output_image)
+        cv2.waitKey(15)
